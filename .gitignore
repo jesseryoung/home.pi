@@ -1,0 +1,4 @@
+**/obj
+**/bin
+out
+local.settings.json
