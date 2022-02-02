@@ -1,4 +1,4 @@
-namespace Home.Pi.Contracts;
+namespace Home.Pi.Core;
 
 
 public class QueueStorageOptions

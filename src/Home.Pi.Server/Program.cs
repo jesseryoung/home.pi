@@ -2,7 +2,7 @@ using System.Net;
 using Azure.Core;
 using Azure.Identity;
 using Azure.Storage.Queues;
-using Home.Pi.Contracts;
+using Home.Pi.Core;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.DependencyInjection;

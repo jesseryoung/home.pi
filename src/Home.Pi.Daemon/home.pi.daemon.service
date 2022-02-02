@@ -12,8 +12,8 @@ Environment="PATH=/home/pi/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/
 User=pi
 Group=pi
 
-StandardOutput=file:/home/pi/home.pi.daemon/stdout.log
-StandardError=file:/home/pi/home.pi.daemon/stderr.log
+StandardOutput=journal
+StandardError=journal
 Restart=always
 
 [Install]

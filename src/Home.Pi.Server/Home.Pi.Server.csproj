@@ -29,6 +29,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Home.Pi.Contracts\Home.Pi.Contracts.csproj" />
+    <ProjectReference Include="..\Home.Pi.Core\Home.Pi.Core.csproj" />
   </ItemGroup>
 </Project>

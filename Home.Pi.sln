@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Home.Pi.Daemon", "src\Home.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Home.Pi.Server", "src\Home.Pi.Server\Home.Pi.Server.csproj", "{ABD0FA2E-F1E6-431D-B6C7-AD29F8325559}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Home.Pi.Contracts", "src\Home.Pi.Contracts\Home.Pi.Contracts.csproj", "{AE8252D6-EFA3-4386-B436-735AFB92F676}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Home.Pi.Core", "src\Home.Pi.Core\Home.Pi.Core.csproj", "{AE8252D6-EFA3-4386-B436-735AFB92F676}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
