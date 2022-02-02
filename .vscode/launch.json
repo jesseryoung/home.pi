@@ -9,9 +9,12 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/home.Code.Daemon/bin/Debug/net6.0/home.Code.Daemon.dll",
-      "args": [],
-      "cwd": "${workspaceFolder}",
+      "program": "${workspaceFolder}/src/home.Code.Daemon/bin/Debug/net6.0/Home.Code.Daemon.dll",
+      "args": [
+        "--environment",
+        "Development"
+      ],
+      "cwd": "${workspaceFolder}/src/home.Code.Daemon/bin/Debug/net6.0/",
       "stopAtEntry": false,
       "console": "internalConsole"
     },

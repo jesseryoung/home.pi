@@ -2,3 +2,7 @@
 **/bin
 out
 local.settings.json
+appsettings.Production.json
+__azurite*
+__blobstorage__
+__queuestorage__

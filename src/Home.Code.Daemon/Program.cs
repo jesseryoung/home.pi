@@ -2,22 +2,16 @@
 using Azure.Core;
 using Azure.Identity;
 using Azure.Storage.Queues;
-using Azure.Storage.Queues.Models;
 using Microsoft.Extensions.Hosting;
 
 var host = Host
-    .CreateDefaultBuilder()
+    .CreateDefaultBuilder(args)
     .ConfigureServices((_, services) =>
     {
         services.AddSingleton<TokenCredential, DefaultAzureCredential>();
-        // Oh yeah, I'm hardcoding this - what are you going to do, tell my boss?
-        services.AddScoped<QueueClient>(s =>
-        {
-            var creds = s.GetRequiredService<TokenCredential>();
-            var client = new QueueClient(new Uri("https://storhome.queue.core.windows.net/messages"), creds);
-            client.CreateIfNotExists();
-            return client;
-        });
+        services.AddOptions<QueueStorageOptions>().BindConfiguration("QueueStorageOptions");
+        services.AddOptions<WakeUpPcOptions>().BindConfiguration("WakeUpPcOptions");
+        services.AddQueue();
         services.AddMessageHandlers();
         services.AddHostedService<Daemon>();
     })
@@ -42,9 +36,10 @@ class Daemon : IHostedService
     }
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        // Man, this is getting serious, I'm putting real comments in this method.
+        // WTF, I don't even log in my production apps.
         this.logger.LogInformation("Starting up.");
 
+        // Man, this is getting serious, I'm putting real comments in here.
         while (!cancellationToken.IsCancellationRequested)
         {
             // Get all the messages we can
@@ -86,6 +81,9 @@ class Daemon : IHostedService
                         this.logger.LogError(ex, $"Error executing message handler for '{messageGroup.Key}'.");
                     }
 
+                    // Leave messages on the queue that I'm not configured to handle
+                    // I'm not sure why, but that kind of sounds like a bad idea.... fuck it.
+                    // Also, I'm not actually putting them back on the queue, I'm just ignore them and waiting for their pop token to expire.
                     foreach (var message in messageGroup)
                     {
                         await this.queueClient.DeleteMessageAsync(message.MessageId, message.PopReceipt, CancellationToken.None);

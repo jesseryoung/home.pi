@@ -8,19 +8,14 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-var host = new HostBuilder()
+var host = Host
+    .CreateDefaultBuilder()
     .ConfigureFunctionsWorkerDefaults()
     .ConfigureServices((builder, services) =>
     {
         services.AddSingleton<TokenCredential, DefaultAzureCredential>();
-        // Oh yeah, I'm hardcoding this - what are you going to do, tell my boss?
-        services.AddScoped<QueueClient>(s =>
-        {
-            var client = new QueueClient(new Uri("https://storhome.queue.core.windows.net/messages"), s.GetRequiredService<TokenCredential>());
-            // Again, don't care
-            client.CreateIfNotExists();
-            return client;
-        });
+        services.AddOptions<QueueStorageOptions>().BindConfiguration("QueueStorageOptions");
+        services.AddQueue();
     })
     .Build();
 
