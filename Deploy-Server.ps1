@@ -5,7 +5,7 @@ param (
     $FunctionApp
 )
 
-Push-Location -Path "./src/Home.Code.Server"
+Push-Location -Path "./src/Home.Pi.Server"
 
 func azure functionapp publish $FunctionApp
 

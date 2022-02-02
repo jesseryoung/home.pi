@@ -1,4 +1,4 @@
-namespace Home.Code.Daemon;
+namespace Home.Pi.Daemon;
 
 public interface IMessageHandler<TMessage>
     where TMessage : Message

@@ -2,7 +2,7 @@ using System.Net;
 using System.Net.Sockets;
 using Microsoft.Extensions.Options;
 
-namespace Home.Code.Daemon;
+namespace Home.Pi.Daemon;
 
 public class WakeUpPcOptions
 {

@@ -1,0 +1,20 @@
+[Unit]
+#Documentation https://www.freedesktop.org/software/systemd/man/systemd.service.html
+
+Description=Home.Pi.Daemon
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/pi/home.pi.daemon/
+ExecStart=/home/pi/home.pi.daemon/Home.Pi.Daemon
+Environment="PATH=/home/pi/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin::/home/pi/.dotnet"
+User=pi
+Group=pi
+
+StandardOutput=file:/home/pi/home.pi.daemon/stdout.log
+StandardError=file:/home/pi/home.pi.daemon/stderr.log
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

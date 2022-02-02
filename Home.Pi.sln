@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9BDEE25F-C51A-4FD3-A16F-1306CFFABF0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Home.Code.Daemon", "src\Home.Code.Daemon\Home.Code.Daemon.csproj", "{64E10237-F09C-416A-8C16-B54081279E0C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Home.Pi.Daemon", "src\Home.Pi.Daemon\Home.Pi.Daemon.csproj", "{64E10237-F09C-416A-8C16-B54081279E0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Home.Code.Server", "src\Home.Code.Server\Home.Code.Server.csproj", "{ABD0FA2E-F1E6-431D-B6C7-AD29F8325559}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Home.Pi.Server", "src\Home.Pi.Server\Home.Pi.Server.csproj", "{ABD0FA2E-F1E6-431D-B6C7-AD29F8325559}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Home.Code.Contracts", "src\Home.Code.Contracts\Home.Code.Contracts.csproj", "{AE8252D6-EFA3-4386-B436-735AFB92F676}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Home.Pi.Contracts", "src\Home.Pi.Contracts\Home.Pi.Contracts.csproj", "{AE8252D6-EFA3-4386-B436-735AFB92F676}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

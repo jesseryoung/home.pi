@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Home.Code.Contracts;
+namespace Home.Pi.Contracts;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
 public class MessageAttribute : Attribute

@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/src/Home.Code.Daemon/Home.Code.Daemon.csproj",
+                "${workspaceFolder}/src/Home.Pi.Daemon/Home.Pi.Daemon.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -33,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/src/Home.Code.Daemon/Home.Code.Daemon.csproj"
+                "${workspaceFolder}/src/Home.Pi.Daemon/Home.Pi.Daemon.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

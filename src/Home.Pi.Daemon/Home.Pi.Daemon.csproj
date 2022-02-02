@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Home.Code.Contracts\Home.Code.Contracts.csproj" />
+    <ProjectReference Include="..\Home.Pi.Contracts\Home.Pi.Contracts.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -22,6 +22,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="appsettings.*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="home.pi.daemon.service">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

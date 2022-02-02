@@ -15,8 +15,8 @@
     "source.organizeImports": true
   },
   "editor.formatOnSave": true,
-  "azureFunctions.projectSubpath": "src\\Home.Code.Server",
-  "azureFunctions.deploySubpath": "src\\Home.Code.Server/bin/Release/net6.0/publish",
+  "azureFunctions.projectSubpath": "src\\Home.Pi.Server",
+  "azureFunctions.deploySubpath": "src\\Home.Pi.Server/bin/Release/net6.0/publish",
   "azureFunctions.projectLanguage": "C#",
   "azureFunctions.projectRuntime": "~4",
   "debug.internalConsoleOptions": "neverOpen",

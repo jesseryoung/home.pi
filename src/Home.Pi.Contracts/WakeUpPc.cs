@@ -1,4 +1,4 @@
-namespace Home.Code.Contracts;
+namespace Home.Pi.Contracts;
 
 [Message(nameof(WakeUpPcMessage))]
 public class WakeUpPcMessage : Message

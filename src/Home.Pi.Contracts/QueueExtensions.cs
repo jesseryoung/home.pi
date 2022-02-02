@@ -3,7 +3,7 @@ using Azure.Storage.Queues;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-namespace Home.Code.Contracts;
+namespace Home.Pi.Contracts;
 
 public static class QueueExtensiosn
 {

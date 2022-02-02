@@ -9,7 +9,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/home.Code.Daemon/bin/Debug/net6.0/Home.Code.Daemon.dll",
+      "program": "${workspaceFolder}/src/home.Code.Daemon/bin/Debug/net6.0/Home.Pi.Daemon.dll",
       "args": [
         "--environment",
         "Development"
