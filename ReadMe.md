@@ -15,3 +15,4 @@ A systemd service that runs on a Rasberry Pi running on my local network.
 
 ## Current Functionality
 - Issue a WOL Packet to a PC
+- Issue control messages to [shelf.pi](https://github.com/jesseryoung/shelf.pi)
