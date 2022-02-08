@@ -22,7 +22,7 @@ if ($?) {
     }
 }
 Write-Host "Building...."
-dotnet publish ./src/Home.Pi.Daemon -o ./out --self-contained
+dotnet publish ./src/Home.Pi.Daemon -o ./out --self-contained --runtime linux-arm64
 if (-not $?) {
     exit
 }

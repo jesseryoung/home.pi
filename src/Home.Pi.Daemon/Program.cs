@@ -8,12 +8,16 @@ var host = Host
     .CreateDefaultBuilder(args)
     .ConfigureServices((_, services) =>
     {
-        services.AddSingleton<TokenCredential, DefaultAzureCredential>();
+        // Options
         services.AddOptions<QueueStorageOptions>().BindConfiguration("QueueStorageOptions");
+        services.AddOptions<PiShelfOptions>().BindConfiguration("PiShelfOptions");
         services.AddOptions<WakeUpPcOptions>().BindConfiguration("WakeUpPcOptions");
-        services.AddQueue();
-        services.AddMessageHandlers();
-        services.AddHostedService<Daemon>();
+
+        // Services
+        services.AddSingleton<TokenCredential, DefaultAzureCredential>()
+            .AddQueue()
+            .AddMessageHandlers()
+            .AddHostedService<Daemon>();
     })
     .Build();
 

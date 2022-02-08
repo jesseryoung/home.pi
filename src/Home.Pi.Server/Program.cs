@@ -58,4 +58,34 @@ public class Functions
     }
 
 
+    [Function(nameof(TurnOffAnimations))]
+    public async Task<HttpResponseData> TurnOffAnimations([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequestData request)
+    {
+        var message = new ControlPiShelfMessage()
+        {
+            Operation = ControlPiShelfOperation.TurnOffAnimations
+        };
+
+        // If still think I care, you should look at the implementation of that Serialize method....
+        await this.queueClient.SendMessageAsync(message.Serialize());
+
+        return request.CreateResponse(HttpStatusCode.OK);
+    }
+
+
+    [Function(nameof(TurnOnClock))]
+    public async Task<HttpResponseData> TurnOnClock([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequestData request)
+    {
+        var message = new ControlPiShelfMessage()
+        {
+            Operation = ControlPiShelfOperation.TurnOnClock
+        };
+
+        // If still think I care, you should look at the implementation of that Serialize method....
+        await this.queueClient.SendMessageAsync(message.Serialize());
+
+        return request.CreateResponse(HttpStatusCode.OK);
+    }
+
+
 }

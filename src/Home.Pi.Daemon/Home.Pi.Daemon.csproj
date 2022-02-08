@@ -10,7 +10,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PublishSingleFile>true</PublishSingleFile>
-    <RuntimeIdentifier>linux-arm64</RuntimeIdentifier>
   </PropertyGroup>
 
   <ItemGroup>
