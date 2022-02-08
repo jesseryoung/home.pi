@@ -27,7 +27,7 @@ await host.RunAsync();
 
 class Daemon : IHostedService
 {
-    private const long MinimumWaitTimeMilliseconds = 5000;
+    private const long MinimumWaitTimeMilliseconds = 1000;
     private readonly ILogger<Daemon> logger;
     private readonly QueueClient queueClient;
     private readonly IServiceProvider serviceProvider;
