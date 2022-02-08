@@ -3,7 +3,7 @@ Home.Pi
 This is a pet project to control some devices inside my home. This was created to solve a single issue initially (Be able to say "Hey Google, turn my computer on") and to stretch my legs with .NET and get to know some of the newer features of the framework. This project likely contains the following:
 - Typos
 - Profanity laden comments
-- Underegineered hacks
+- Underengineered hacks
 - Overengineered hacks
 - Gramatical errors
 
