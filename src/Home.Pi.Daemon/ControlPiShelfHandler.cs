@@ -23,7 +23,7 @@ public class ControlPiShelfHandler : IMessageHandler<ControlPiShelfMessage>
     }
     public async Task Handle(ControlPiShelfMessage message)
     {
-        this.logger.LogInformation($"Issing a '{message.Operation.ToString()}' operation to {this.shelfPiAddress}.");
+        this.logger.LogInformation($"Issuing a '{message.Operation.ToString()}' operation to {this.shelfPiAddress}.");
         using var client = new HttpClient();
 
         var response = message.Operation switch
