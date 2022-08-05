@@ -28,10 +28,12 @@ await host.RunAsync();
 
 class Daemon : BackgroundService
 {
-    private const long MinimumWaitTimeMilliseconds = 1000;
     private readonly ILogger<Daemon> logger;
     private readonly QueueClient queueClient;
     private readonly IServiceProvider serviceProvider;
+
+    // Time delay between queue polls
+    private readonly PeriodicTimer timer = new(TimeSpan.FromSeconds(1));
 
     public Daemon(ILogger<Daemon> logger, QueueClient queueClient, IServiceProvider serviceProvider)
     {
@@ -45,7 +47,9 @@ class Daemon : BackgroundService
         this.logger.LogInformation("Starting up.");
 
         // Man, this is getting serious, I'm putting real comments in here.
-        while (!stoppingToken.IsCancellationRequested)
+        // OperationCanceledException suck        
+        while (await this.timer.WaitForNextTickAsync()
+            && !stoppingToken.IsCancellationRequested)
         {
             // Get all the messages we can
             var queueMessages = await this.queueClient.ReceiveMessagesAsync(maxMessages: 32);
@@ -98,12 +102,6 @@ class Daemon : BackgroundService
                         await this.queueClient.DeleteMessageAsync(message.MessageId, message.PopReceipt, CancellationToken.None);
                     }
                 }
-            }
-
-            if (sw.ElapsedMilliseconds < MinimumWaitTimeMilliseconds)
-            {
-                // Oh no, not accounting for an integer overflow!? What are you gonna do about it? Cry?
-                await Task.Delay((int)(MinimumWaitTimeMilliseconds - sw.ElapsedMilliseconds));
             }
         }
 
