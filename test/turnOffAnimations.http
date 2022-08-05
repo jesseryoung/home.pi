@@ -1,0 +1,1 @@
+GET http://localhost:7071/api/TurnOffAnimations HTTP/1.1

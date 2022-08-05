@@ -8,7 +8,7 @@ public class WakeUpPcOptions
 {
     public string? MACAddress { get; set; }
 }
-public class WakeUpPcHandler : IMessageHandler<WakeUpPcMessage>
+public class WakeUpPcHandler : MessageHandler<WakeUpPcMessage>
 {
     private readonly ILogger<WakeUpPcHandler> logger;
     private readonly string macAddress;
@@ -24,7 +24,7 @@ public class WakeUpPcHandler : IMessageHandler<WakeUpPcMessage>
         this.macAddress = options.Value.MACAddress;
     }
 
-    public async Task Handle(WakeUpPcMessage message)
+    public override async Task HandleMessage(WakeUpPcMessage notification, CancellationToken cancellationToken)
     {
         this.logger.LogInformation("Waking up the computer.");
         var address = Convert.FromHexString(this.macAddress.Replace("-", ""));

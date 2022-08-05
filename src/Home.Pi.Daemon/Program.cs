@@ -2,6 +2,7 @@
 using Azure.Core;
 using Azure.Identity;
 using Azure.Storage.Queues;
+using MediatR;
 using Microsoft.Extensions.Hosting;
 
 var host = Host
@@ -16,8 +17,8 @@ var host = Host
         // Services
         services.AddSingleton<TokenCredential, DefaultAzureCredential>()
             .AddQueue()
-            .AddMessageHandlers()
-            .AddHostedService<Daemon>();
+            .AddHostedService<Daemon>()
+            .AddMediatR(typeof(Daemon), typeof(Message));
     })
     .Build();
 
@@ -25,7 +26,7 @@ var host = Host
 await host.RunAsync();
 
 
-class Daemon : IHostedService
+class Daemon : BackgroundService
 {
     private const long MinimumWaitTimeMilliseconds = 1000;
     private readonly ILogger<Daemon> logger;
@@ -38,13 +39,13 @@ class Daemon : IHostedService
         this.queueClient = queueClient;
         this.serviceProvider = serviceProvider;
     }
-    public async Task StartAsync(CancellationToken cancellationToken)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         // WTF, I don't even log in my production apps.
         this.logger.LogInformation("Starting up.");
 
         // Man, this is getting serious, I'm putting real comments in here.
-        while (!cancellationToken.IsCancellationRequested)
+        while (!stoppingToken.IsCancellationRequested)
         {
             // Get all the messages we can
             var queueMessages = await this.queueClient.ReceiveMessagesAsync(maxMessages: 32);
@@ -65,7 +66,8 @@ class Daemon : IHostedService
                 PopReceipt = m.PopReceipt,
                 InsertedOn = m.InsertedOn
             })
-            .GroupBy(m => m.Message.MessageType);
+            .Where(m => m.Message != null)
+            .GroupBy(m => m.Message.GetType());
 
             foreach (var messageGroup in messageGroups)
             {
@@ -77,8 +79,11 @@ class Daemon : IHostedService
                     this.logger.LogInformation($"Executing message handler for '{messageGroup.Key}'.");
                     try
                     {
-                        // Wooooo magic box message handler!
-                        await this.serviceProvider.InvokeMessageHandler(latestMessage.Message.Value!);
+                        using (var scope = this.serviceProvider.CreateAsyncScope())
+                        {
+                            var mediator = this.serviceProvider.GetRequiredService<IMediator>();
+                            await mediator.Publish(latestMessage.Message!, stoppingToken);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -104,6 +109,4 @@ class Daemon : IHostedService
 
         this.logger.LogInformation("Shutting down.");
     }
-
-    public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 }

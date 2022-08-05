@@ -6,7 +6,7 @@ public class PiShelfOptions
 {
     public string? ShelfPiAddress { get; set; }
 }
-public class ControlPiShelfHandler : IMessageHandler<ControlPiShelfMessage>
+public class ControlPiShelfHandler : MessageHandler<ControlPiShelfMessage>
 {
     private readonly string shelfPiAddress;
     private readonly ILogger<ControlPiShelfHandler> logger;
@@ -21,12 +21,12 @@ public class ControlPiShelfHandler : IMessageHandler<ControlPiShelfMessage>
         this.shelfPiAddress = options.Value.ShelfPiAddress;
         this.logger = logger;
     }
-    public async Task Handle(ControlPiShelfMessage message)
+    public override async Task HandleMessage(ControlPiShelfMessage notification, CancellationToken cancellationToken)
     {
-        this.logger.LogInformation($"Issuing a '{message.Operation.ToString()}' operation to {this.shelfPiAddress}.");
+        this.logger.LogInformation($"Issuing a '{notification.Operation.ToString()}' operation to {this.shelfPiAddress}.");
         using var client = new HttpClient();
 
-        var response = message.Operation switch
+        var response = notification.Operation switch
         {
             ControlPiShelfOperation.TurnOnClock => await client.PostAsync($"{this.shelfPiAddress}/startClock", null),
             ControlPiShelfOperation.TurnOffAnimations => await client.PostAsync($"{this.shelfPiAddress}/stopAnimations", null),

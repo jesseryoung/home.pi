@@ -51,7 +51,6 @@ public class Functions
     {
         var message = new WakeUpPcMessage();
 
-        // If still think I care, you should look at the implementation of that Serialize method....
         await this.queueClient.SendMessageAsync(message.Serialize());
 
         return request.CreateResponse(HttpStatusCode.OK);
@@ -65,8 +64,6 @@ public class Functions
         {
             Operation = ControlPiShelfOperation.TurnOffAnimations
         };
-
-        // If still think I care, you should look at the implementation of that Serialize method....
         await this.queueClient.SendMessageAsync(message.Serialize());
 
         return request.CreateResponse(HttpStatusCode.OK);
@@ -80,8 +77,6 @@ public class Functions
         {
             Operation = ControlPiShelfOperation.TurnOnClock
         };
-
-        // If still think I care, you should look at the implementation of that Serialize method....
         await this.queueClient.SendMessageAsync(message.Serialize());
 
         return request.CreateResponse(HttpStatusCode.OK);

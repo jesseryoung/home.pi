@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace Home.Pi.Core;
 
-public static class QueueExtensiosn
+public static class HomePiExtensions
 {
 
     public static IServiceCollection AddQueue(this IServiceCollection services)
@@ -28,4 +28,5 @@ public static class QueueExtensiosn
 
         return services;
     }
+
 }

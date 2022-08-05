@@ -8,7 +8,6 @@ public enum ControlPiShelfOperation
     TurnOffAnimations = 2
 }
 
-[Message(nameof(ControlPiShelfMessage))]
 public class ControlPiShelfMessage : Message
 {
     public ControlPiShelfOperation Operation { get; set; }
