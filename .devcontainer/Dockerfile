@@ -7,7 +7,7 @@ RUN mkdir /tmp/dockerbuild \
     && curl -sL https://dotnet.microsoft.com/download/dotnet/scripts/v1/dotnet-install.sh -O \
     && chmod +x dotnet-install.sh \
     && ./dotnet-install.sh --channel 6.0 \
-    && ./dotnet-install.sh --channel 7.0 \
+    && ./dotnet-install.sh --version 7.0.100-preview.5.22307.18 \
     && rm -rf /tmp/dockerbuild
 ENV PATH ${PATH}:/home/vscode/.dotnet
 USER root

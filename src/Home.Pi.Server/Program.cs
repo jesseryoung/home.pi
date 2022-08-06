@@ -35,7 +35,7 @@ public class Functions
     }
 
     [Function(nameof(Health))]
-    public async Task<HttpResponseData> Health([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequestData request)
+    public async Task<HttpResponseData> Health([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequestData request)
     {
         var response = request.CreateResponse(HttpStatusCode.OK);
         await response.WriteAsJsonAsync(new

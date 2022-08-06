@@ -14,8 +14,12 @@
 		"ms-dotnettools.csharp",
 		"ms-azuretools.vscode-docker",
 		"ms-azuretools.vscode-azurefunctions",
-		"Azurite.azurite"
+		"Azurite.azurite",
+		"humao.rest-client"
 	],
 	"remoteUser": "vscode",
-	"postStartCommand": "dotnet restore"
+	"postStartCommand": "dotnet restore",
+	"features": {
+		"azure-cli": "latest"
+	}
 }
