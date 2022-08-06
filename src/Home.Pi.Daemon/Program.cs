@@ -59,9 +59,6 @@ class Daemon : BackgroundService
                 this.logger.LogInformation($"Got {queueMessages.Value.Length} messages from queue.");
             }
 
-            var sw = Stopwatch.StartNew();
-
-
             // Group up the messages by their message type.
             var messageGroups = queueMessages.Value.Select(m => new
             {
