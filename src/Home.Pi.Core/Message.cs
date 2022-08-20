@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
 using MediatR;
 
 namespace Home.Pi.Core;
@@ -20,23 +21,34 @@ public abstract class Message : INotification
 
     static Message()
     {
-        // Find all types that inherit from Message
+        // Find Message implementations
         var messageBaseType = typeof(Message);
-        var messageTypes = messageBaseType
+        var messageTypes = typeof(Message)
             .Assembly
             .DefinedTypes
             .Where(dt => dt.IsAssignableTo(messageBaseType) && !dt.IsGenericTypeDefinition && dt != messageBaseType)
             .ToArray();
 
 
-        // Define supported derived types for System.Text.Json to deserialize to
-        var typeConfiguration = new JsonPolymorphicTypeConfiguration(messageBaseType);
-        foreach (var messageType in messageTypes)
+        // Configure json poly options
+        var polymorphismOptions = new JsonPolymorphismOptions();
+        foreach (var requestType in messageTypes)
         {
-            typeConfiguration = typeConfiguration.WithDerivedType(messageType, messageType.FullName!);
+            polymorphismOptions.DerivedTypes.Add(new(requestType, requestType.FullName!));
         }
 
-        jsonOptions.PolymorphicTypeConfigurations.Add(typeConfiguration);
+        // Configure resolver to use poly options
+        var typeResolver = new DefaultJsonTypeInfoResolver();
+        typeResolver.Modifiers.Add(t =>
+        {
+            if (t.Type == messageBaseType)
+            {
+                t.PolymorphismOptions = polymorphismOptions;
+            }
+        });
+        jsonOptions.TypeInfoResolver = typeResolver;
+
+        jsonOptions.PropertyNameCaseInsensitive = true;
     }
 
 }
