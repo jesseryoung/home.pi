@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 using MediatR;
 
@@ -9,12 +8,12 @@ public abstract class Message : INotification
 {
     public string Serialize()
     {
-        return JsonSerializer.Serialize<Message>(this, options: Message.jsonOptions);
+        return JsonSerializer.Serialize(this, options: jsonOptions);
     }
 
     public static Message? Deserialize(string message)
     {
-        return JsonSerializer.Deserialize<Message>(message, options: Message.jsonOptions);
+        return JsonSerializer.Deserialize<Message>(message, options: jsonOptions);
     }
 
     private static readonly JsonSerializerOptions jsonOptions = new();

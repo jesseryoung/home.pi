@@ -43,9 +43,9 @@ public class WakeUpPcHandler : MessageHandler<WakeUpPcMessage>
         sock.EnableBroadcast = true;
 
         await sock.SendToAsync(magicPacket, SocketFlags.None, BroadcastAddress);
-        await Task.Delay(500);
+        await Task.Delay(500, cancellationToken);
         await sock.SendToAsync(magicPacket, SocketFlags.None, BroadcastAddress);
-        await Task.Delay(500);
+        await Task.Delay(500, cancellationToken);
         await sock.SendToAsync(magicPacket, SocketFlags.None, BroadcastAddress);
     }
 }

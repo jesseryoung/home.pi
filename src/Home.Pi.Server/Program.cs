@@ -25,7 +25,7 @@ await host.RunAsync();
 
 
 
-public class Functions
+internal class Functions
 {
     private readonly QueueClient queueClient;
 
@@ -78,6 +78,19 @@ public class Functions
             Operation = ControlPiShelfOperation.TurnOnClock
         };
         await this.queueClient.SendMessageAsync(message.Serialize());
+
+        return request.CreateResponse(HttpStatusCode.OK);
+    }
+
+    [Function(nameof(TurnOnEverything))]
+    public async Task<HttpResponseData> TurnOnEverything([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequestData request)
+    {
+        await this.queueClient.SendMessageAsync(new ControlPiShelfMessage()
+        {
+            Operation = ControlPiShelfOperation.TurnOnClock
+        }.Serialize());
+
+        await this.queueClient.SendMessageAsync(new WakeUpPcMessage().Serialize());
 
         return request.CreateResponse(HttpStatusCode.OK);
     }

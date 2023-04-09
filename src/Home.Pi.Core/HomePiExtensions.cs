@@ -10,7 +10,7 @@ public static class HomePiExtensions
 
     public static IServiceCollection AddQueue(this IServiceCollection services)
     {
-        services.AddSingleton<QueueClient>(s =>
+        services.AddSingleton(s =>
         {
             var options = s.GetRequiredService<IOptions<QueueStorageOptions>>();
             if (options.Value.Account!.StartsWith("https://"))

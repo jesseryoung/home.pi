@@ -15,7 +15,7 @@ public class ControlPiShelfHandler : MessageHandler<ControlPiShelfMessage>
     {
         if (null == options.Value.ShelfPiAddress)
         {
-            throw new ArgumentNullException($"Missing {nameof(PiShelfOptions.ShelfPiAddress)}");
+            throw new ArgumentException($"Missing {nameof(PiShelfOptions.ShelfPiAddress)}");
         }
 
         this.shelfPiAddress = options.Value.ShelfPiAddress;
@@ -23,13 +23,14 @@ public class ControlPiShelfHandler : MessageHandler<ControlPiShelfMessage>
     }
     public override async Task HandleMessage(ControlPiShelfMessage notification, CancellationToken cancellationToken)
     {
-        this.logger.LogInformation($"Issuing a '{notification.Operation.ToString()}' operation to {this.shelfPiAddress}.");
+        this.logger.LogInformation("Issuing a '{}' operation to {}.", notification.Operation, this.shelfPiAddress);
         using var client = new HttpClient();
 
         var response = notification.Operation switch
         {
-            ControlPiShelfOperation.TurnOnClock => await client.PostAsync($"{this.shelfPiAddress}/startClock", null),
-            ControlPiShelfOperation.TurnOffAnimations => await client.PostAsync($"{this.shelfPiAddress}/stopAnimations", null),
+            ControlPiShelfOperation.TurnOnClock => await client.PostAsync($"{this.shelfPiAddress}/startClock", null, cancellationToken),
+            ControlPiShelfOperation.TurnOffAnimations => await client.PostAsync($"{this.shelfPiAddress}/stopAnimations", null, cancellationToken),
+            ControlPiShelfOperation.Unspecified => throw new NotImplementedException(),
             _ => default
         };
 

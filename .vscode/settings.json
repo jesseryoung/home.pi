@@ -11,15 +11,16 @@
     "__blobstorage__": true,
     "__queuestorage__": true
   },
-  "editor.codeActionsOnSave": {
-    "source.organizeImports": true
+  "omnisharp.enableEditorConfigSupport": true,
+  "omnisharp.enableRoslynAnalyzers": true,
+  "[csharp]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
   },
-  "[dockerfile]": {
-    "editor.formatOnSave": false
-  },
-  "editor.formatOnSave": true,
   "azureFunctions.projectSubpath": "src\\Home.Pi.Server",
-  "azureFunctions.deploySubpath": "src\\Home.Pi.Server/bin/Release/net6.0/publish",
+  "azureFunctions.deploySubpath": "src\\Home.Pi.Server/bin/Release/net7.0/publish",
   "azureFunctions.projectLanguage": "C#",
   "azureFunctions.projectRuntime": "~4",
   "debug.internalConsoleOptions": "neverOpen",

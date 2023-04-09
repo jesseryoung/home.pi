@@ -6,9 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Azure.Storage.Queues" Version="12.11.0" />
-    <PackageReference Include="Azure.Identity" Version="1.6.0" />
+    <PackageReference Include="Azure.Storage.Queues" Version="12.13.1" />
+    <PackageReference Include="Azure.Identity" Version="1.8.2" />
     <PackageReference Include="Mediatr.contracts" Version="1.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.0-preview.5.22301.12" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
   </ItemGroup>
 </Project>

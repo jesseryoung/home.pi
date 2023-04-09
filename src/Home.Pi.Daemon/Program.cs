@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Azure.Core;
+﻿using Azure.Core;
 using Azure.Identity;
 using Azure.Storage.Queues;
 using MediatR;
@@ -26,7 +25,7 @@ var host = Host
 await host.RunAsync();
 
 
-class Daemon : BackgroundService
+internal class Daemon : BackgroundService
 {
     private readonly ILogger<Daemon> logger;
     private readonly QueueClient queueClient;
@@ -48,27 +47,27 @@ class Daemon : BackgroundService
 
         // Man, this is getting serious, I'm putting real comments in here.
         // OperationCanceledException suck        
-        while (await this.timer.WaitForNextTickAsync()
+        while (await this.timer.WaitForNextTickAsync(stoppingToken)
             && !stoppingToken.IsCancellationRequested)
         {
             // Get all the messages we can
-            var queueMessages = await this.queueClient.ReceiveMessagesAsync(maxMessages: 32);
+            var queueMessages = await this.queueClient.ReceiveMessagesAsync(maxMessages: 32, cancellationToken: stoppingToken);
 
             if (queueMessages.Value.Length > 0)
             {
-                this.logger.LogInformation($"Got {queueMessages.Value.Length} messages from queue.");
+                this.logger.LogInformation("Got {} messages from queue.", queueMessages.Value.Length);
             }
 
             // Group up the messages by their message type.
             var messageGroups = queueMessages.Value.Select(m => new
             {
                 Message = Message.Deserialize(m.Body.ToString()),
-                MessageId = m.MessageId,
-                PopReceipt = m.PopReceipt,
-                InsertedOn = m.InsertedOn
+                m.MessageId,
+                m.PopReceipt,
+                m.InsertedOn
             })
             .Where(m => m.Message != null)
-            .GroupBy(m => m.Message.GetType());
+            .GroupBy(m => m.Message!.GetType());
 
             foreach (var messageGroup in messageGroups)
             {
@@ -77,18 +76,16 @@ class Daemon : BackgroundService
                 {
                     // Only process latest message in group
                     var latestMessage = messageGroup.OrderByDescending(m => m.InsertedOn).First();
-                    this.logger.LogInformation($"Executing message handler for '{messageGroup.Key}'.");
+                    this.logger.LogInformation("Executing message handler for '{}'.", messageGroup.Key);
                     try
                     {
-                        using (var scope = this.serviceProvider.CreateAsyncScope())
-                        {
-                            var mediator = this.serviceProvider.GetRequiredService<IMediator>();
-                            await mediator.Publish(latestMessage.Message!, stoppingToken);
-                        }
+                        using var scope = this.serviceProvider.CreateAsyncScope();
+                        var mediator = this.serviceProvider.GetRequiredService<IMediator>();
+                        await mediator.Publish(latestMessage.Message!, stoppingToken);
                     }
                     catch (Exception ex)
                     {
-                        this.logger.LogError(ex, $"Error executing message handler for '{messageGroup.Key}'.");
+                        this.logger.LogError(ex, "Error executing message handler for '{}'.", messageGroup.Key);
                     }
 
                     // Leave messages on the queue that I'm not configured to handle
