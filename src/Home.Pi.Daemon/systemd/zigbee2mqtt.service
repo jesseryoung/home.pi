@@ -1,0 +1,26 @@
+[Unit]
+
+Description=Zigbee2Mqttt
+After=home.pi.daemon.service
+
+Requires=home.pi.daemon.service
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+ExecStart=docker run --rm \
+    --device=/dev/ttyUSB0:/dev/ttyUSB0 \
+    -p 8080:8080 \
+    -v zigbee2mqtt:/app/data \
+    -v /run/udev:/run/udev:ro \
+    -e TZ=America/Chicago \
+    --add-host host.docker.internal:host-gateway \
+    koenkk/zigbee2mqtt
+
+StandardOutput=journal
+StandardError=journal
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

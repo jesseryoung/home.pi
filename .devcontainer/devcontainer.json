@@ -25,7 +25,8 @@
 				"ms-azuretools.vscode-docker",
 				"ms-azuretools.vscode-azurefunctions",
 				"Azurite.azurite",
-				"humao.rest-client"
+				"humao.rest-client",
+				"ms-dotnettools.csdevkit"
 			],
 		}
 	}

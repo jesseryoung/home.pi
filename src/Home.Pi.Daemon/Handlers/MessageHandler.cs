@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace Home.Pi.Daemon;
+namespace Home.Pi.Daemon.Handlers;
 
 public abstract class MessageHandler<TMessage> : INotificationHandler<TMessage>
     where TMessage : Message

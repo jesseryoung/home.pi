@@ -3,6 +3,7 @@
 out
 local.settings.json
 appsettings.Production.json
+appsettings.Development.json
 __azurite*
 __blobstorage__
 __queuestorage__

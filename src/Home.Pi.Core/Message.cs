@@ -16,6 +16,7 @@ public abstract class Message : INotification
         return JsonSerializer.Deserialize<Message>(message, options: jsonOptions);
     }
 
+
     private static readonly JsonSerializerOptions jsonOptions = new();
 
     static Message()
@@ -27,7 +28,6 @@ public abstract class Message : INotification
             .DefinedTypes
             .Where(dt => dt.IsAssignableTo(messageBaseType) && !dt.IsGenericTypeDefinition && dt != messageBaseType)
             .ToArray();
-
 
         // Configure json poly options
         var polymorphismOptions = new JsonPolymorphismOptions();

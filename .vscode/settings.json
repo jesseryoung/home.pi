@@ -25,4 +25,5 @@
   "azureFunctions.projectRuntime": "~4",
   "debug.internalConsoleOptions": "neverOpen",
   "azureFunctions.preDeployTask": "publish (functions)",
+  "dotnet.defaultSolution": "Home.Pi.sln",
 }

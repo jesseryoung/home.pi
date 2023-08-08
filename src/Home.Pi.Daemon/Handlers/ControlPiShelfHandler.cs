@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Options;
 
-namespace Home.Pi.Daemon;
+namespace Home.Pi.Daemon.Handlers;
 
 public class PiShelfOptions
 {
