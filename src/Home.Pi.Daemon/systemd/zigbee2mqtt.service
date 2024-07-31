@@ -1,5 +1,4 @@
 [Unit]
-
 Description=Zigbee2Mqttt
 After=home.pi.daemon.service
 

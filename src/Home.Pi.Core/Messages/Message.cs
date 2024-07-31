@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization.Metadata;
 using MediatR;
 
-namespace Home.Pi.Core;
+namespace Home.Pi.Core.Messages;
 
 public abstract class Message : INotification
 {

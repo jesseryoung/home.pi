@@ -9,12 +9,12 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Home.Pi.Daemon/bin/Debug/net7.0/Home.Pi.Daemon.dll",
+      "program": "${workspaceFolder}/src/Home.Pi.Daemon/bin/Debug/net8.0/Home.Pi.Daemon.dll",
       "args": [
         "--environment",
         "Development"
       ],
-      "cwd": "${workspaceFolder}/src/Home.Pi.Daemon/bin/Debug/net7.0/",
+      "cwd": "${workspaceFolder}/src/Home.Pi.Daemon/bin/Debug/net8.0/",
       "stopAtEntry": false,
       "console": "internalConsole"
     },

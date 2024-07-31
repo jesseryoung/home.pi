@@ -1,8 +1,5 @@
-﻿using Azure.Core;
-using Azure.Identity;
-using Home.Pi.Daemon.Services;
+﻿using Home.Pi.Daemon.Services;
 using Home.Pi.Daemon.Handlers;
-using MediatR;
 using Microsoft.Extensions.Hosting;
 using MQTTnet.Server;
 using MQTTnet;
@@ -14,10 +11,11 @@ var host = Host
     .ConfigureServices((_, services) =>
     {
         // Options
-        services.AddOptions<QueueStorageOptions>().BindConfiguration("QueueStorageOptions");
-        services.AddOptions<PiShelfOptions>().BindConfiguration("PiShelfOptions");
-        services.AddOptions<WakeUpPcOptions>().BindConfiguration("WakeUpPcOptions");
-        services.AddOptions<HueLightControllerOptions>().BindConfiguration("HueLightControllerOptions");
+        services.AddOptions<WakeUpPcOptions>().BindConfiguration(nameof(WakeUpPcOptions));
+        services.AddOptions<HueLightControllerOptions>().BindConfiguration(nameof(HueLightControllerOptions));
+        services.AddOptions<TurnOffAllLightsOptions>().BindConfiguration(nameof(TurnOffAllLightsOptions));
+        services.AddOptions<ChillOptions>().BindConfiguration(nameof(ChillOptions));
+        services.AddOptions<ControlGroupedLightsHandlerOptions>().BindConfiguration(nameof(ControlGroupedLightsHandlerOptions));
 
         services
             .AddHttpClient<IHueLightController, HueLightController>((s, client) =>
@@ -26,7 +24,7 @@ var host = Host
                 client.BaseAddress = new Uri(options.Value.HueBaseAddress);
                 client.DefaultRequestHeaders.Add("hue-application-key", options.Value.HueApplicationKey);
             })
-            .ConfigureHttpMessageHandlerBuilder(b => b.PrimaryHandler = new HttpClientHandler()
+            .ConfigurePrimaryHttpMessageHandler(sp => new HttpClientHandler()
             {
                 ServerCertificateCustomValidationCallback = (req, cert, chain, errors) => true
             });
@@ -34,8 +32,7 @@ var host = Host
 
         // Services
         services
-            .AddSingleton<TokenCredential, DefaultAzureCredential>()
-            .AddQueue()
+            .AddScoped<ILightServerController, LightServerController>()
             .AddTransient(s =>
             {
                 return new MqttFactory()
@@ -44,9 +41,12 @@ var host = Host
                         .Build()
                     );
             })
-            .AddHostedService<QueueDaemon>()
             .AddHostedService<MqttDaemon>()
-            .AddMediatR(typeof(QueueDaemon), typeof(Message));
+            .AddMediatR(cfg =>
+            {
+                cfg.RegisterServicesFromAssemblies(typeof(MqttDaemon).Assembly);
+                cfg.RegisterServicesFromAssemblies(typeof(Message).Assembly);
+            });
     })
     .Build();
 

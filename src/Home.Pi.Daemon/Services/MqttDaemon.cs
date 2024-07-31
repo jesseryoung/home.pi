@@ -6,18 +6,11 @@ using MQTTnet.Server;
 
 namespace Home.Pi.Daemon.Services;
 
-internal class MqttDaemon : BackgroundService
+internal class MqttDaemon(MqttServer mqttServer, ILogger<MqttDaemon> logger, IServiceProvider serviceProvider) : BackgroundService
 {
-    private readonly MqttServer mqttServer;
-    private readonly ILogger<MqttDaemon> logger;
-    private readonly IServiceProvider serviceProvider;
-
-    public MqttDaemon(MqttServer mqttServer, ILogger<MqttDaemon> logger, IServiceProvider serviceProvider)
-    {
-        this.mqttServer = mqttServer;
-        this.logger = logger;
-        this.serviceProvider = serviceProvider;
-    }
+    private readonly MqttServer mqttServer = mqttServer;
+    private readonly ILogger<MqttDaemon> logger = logger;
+    private readonly IServiceProvider serviceProvider = serviceProvider;
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -65,7 +58,11 @@ internal class MqttMessageFactory
     };
     private static readonly Dictionary<(string topic, string action), Message> topicMessageMap = new()
     {
-        { ("zigbee2mqtt/office_tap_desk", "button_1_press"), new TurnOffAllLightsMessage()}
+        { ("zigbee2mqtt/office_wall_tap", "press_1"), new TurnOffAllLightsMessage()},
+        { ("zigbee2mqtt/office_wall_tap", "press_2"), new ControlGroupedLightsMessage() { Group = "KitchenAndHallway" }},
+        { ("zigbee2mqtt/office_wall_tap", "press_3"), new ControlGroupedLightsMessage() { Group = "Office" }},
+        { ("zigbee2mqtt/office_wall_tap", "press_4"), new ControlGroupedLightsMessage() { Group = "LivingRoom" }},
+        { ("zigbee2mqtt/house_tap", "single"), new ChillMessage()},
     };
 
     public static Message[] CreateMessage(MqttApplicationMessage applicationMessage)
@@ -78,11 +75,11 @@ internal class MqttMessageFactory
                 && payload.Action != null
                 && topicMessageMap.TryGetValue((applicationMessage.Topic.ToLowerInvariant(), payload.Action.ToLowerInvariant()), out var message))
             {
-                return new[] { message };
+                return [message];
             }
         }
 
-        return Array.Empty<Message>();
+        return [];
     }
 
 

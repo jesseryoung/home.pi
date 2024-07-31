@@ -1,4 +1,4 @@
-namespace Home.Pi.Core;
+namespace Home.Pi.Core.Messages;
 
 public class WakeUpPcMessage : Message
 {

@@ -12,11 +12,10 @@
     "__queuestorage__": true
   },
   "omnisharp.enableEditorConfigSupport": true,
-  "omnisharp.enableRoslynAnalyzers": true,
   "[csharp]": {
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.organizeImports": true
+      "source.organizeImports": "explicit"
     }
   },
   "azureFunctions.projectSubpath": "src\\Home.Pi.Server",
