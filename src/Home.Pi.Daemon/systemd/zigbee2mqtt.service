@@ -20,6 +20,8 @@ ExecStart=docker run --rm \
 StandardOutput=journal
 StandardError=journal
 Restart=always
+StartLimitIntervalSec=0
+RestartSec=10
 
 [Install]
 WantedBy=multi-user.target
