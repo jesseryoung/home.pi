@@ -3,6 +3,7 @@ Description=Zigbee2Mqttt
 After=home.pi.daemon.service
 
 Requires=home.pi.daemon.service
+StartLimitIntervalSec=0
 
 [Service]
 Type=simple
@@ -20,7 +21,6 @@ ExecStart=docker run --rm \
 StandardOutput=journal
 StandardError=journal
 Restart=always
-StartLimitIntervalSec=0
 RestartSec=10
 
 [Install]

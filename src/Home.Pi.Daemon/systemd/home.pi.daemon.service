@@ -3,6 +3,7 @@
 
 Description=Home.Pi.Daemon
 After=network.target
+StartLimitIntervalSec=0
 
 [Service]
 Type=simple
@@ -15,7 +16,6 @@ Group=pi
 StandardOutput=journal
 StandardError=journal
 Restart=always
-StartLimitIntervalSec=0
 RestartSec=10
 
 [Install]
