@@ -63,6 +63,7 @@ internal class MqttMessageFactory
         { ("zigbee2mqtt/office_wall_tap", "press_3"), new ControlGroupedLightsMessage() { Group = "Office" }},
         { ("zigbee2mqtt/office_wall_tap", "press_4"), new ControlGroupedLightsMessage() { Group = "LivingRoom" }},
         { ("zigbee2mqtt/house_tap", "single"), new ChillMessage()},
+        { ("zigbee2mqtt/house_tap", "long"), new WakeUpPcMessage()},
     };
 
     public static Message[] CreateMessage(MqttApplicationMessage applicationMessage)
