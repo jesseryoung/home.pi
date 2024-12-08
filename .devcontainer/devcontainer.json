@@ -1,15 +1,18 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.241.1/containers/debian
 {
-	"name": "Debian",
+	"name": "home.pi",
 	"build": {
 		"dockerfile": "Dockerfile"
 	},
 	"remoteUser": "vscode",
 	"postStartCommand": "dotnet restore",
 	"features": {
-		"ghcr.io/devcontainers/features/dotnet:2.1.2": {
+		"ghcr.io/devcontainers/features/dotnet:2.1.3": {
 			"version": "8.0"
+		},
+		"ghcr.io/devcontainers/features/azure-cli:1": {
+			
 		}
 	},
 	"customizations": {

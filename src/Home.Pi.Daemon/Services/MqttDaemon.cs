@@ -56,7 +56,7 @@ internal class MqttMessageFactory
     {
         PropertyNameCaseInsensitive = true
     };
-    private static readonly Dictionary<(string topic, string action), Message> topicMessageMap = new()
+    private static readonly Dictionary<(string topic, string action), Message> buttonMessageMap = new()
     {
         { ("zigbee2mqtt/office_wall_tap", "press_1"), new TurnOffAllLightsMessage()},
         { ("zigbee2mqtt/office_wall_tap", "press_2"), new ControlGroupedLightsMessage() { Group = "KitchenAndHallway" }},
@@ -66,17 +66,34 @@ internal class MqttMessageFactory
         { ("zigbee2mqtt/house_tap", "long"), new WakeUpPcMessage()},
     };
 
+    private static readonly string[] tempSensors = ["zigbee2mqtt/kitchen_sink_temp"];
+
     public static Message[] CreateMessage(MqttApplicationMessage applicationMessage)
     {
-        if (topicMessageMap.Keys.Any(k => k.topic.ToLowerInvariant() == applicationMessage.Topic?.ToLowerInvariant()))
+        if (buttonMessageMap.Keys.Any(k => k.topic.ToLowerInvariant() == applicationMessage.Topic?.ToLowerInvariant()))
         {
-            var payload = JsonSerializer.Deserialize<ButtonActionMessage>(applicationMessage.PayloadSegment, serializerOptions);
+            var payload = JsonSerializer.Deserialize<ButtonActionPayload>(applicationMessage.PayloadSegment, serializerOptions);
 
             if (payload != null
                 && payload.Action != null
-                && topicMessageMap.TryGetValue((applicationMessage.Topic.ToLowerInvariant(), payload.Action.ToLowerInvariant()), out var message))
+                && buttonMessageMap.TryGetValue((applicationMessage.Topic.ToLowerInvariant(), payload.Action.ToLowerInvariant()), out var message))
             {
                 return [message];
+            }
+        }
+
+        if (tempSensors.Contains(applicationMessage.Topic, StringComparer.InvariantCultureIgnoreCase))
+        {
+            var payload = JsonSerializer.Deserialize<TempSensorPayload>(applicationMessage.PayloadSegment, serializerOptions);
+            if (payload != null)
+            {
+                return [new TemperatureSensorMessage() {
+                    Device = applicationMessage.Topic.Replace("zigbee2mqtt/", "", StringComparison.InvariantCultureIgnoreCase),
+                    Battery = payload.Battery,
+                    Humidity = payload.Humidity,
+                    LinkQuality = payload.LinkQuality,
+                    Temperature = payload.Temperature,
+                }];
             }
         }
 
@@ -84,5 +101,6 @@ internal class MqttMessageFactory
     }
 
 
-    private record ButtonActionMessage(string Action);
+    private record ButtonActionPayload(string Action);
+    private record TempSensorPayload(int Battery, double Humidity, int LinkQuality, double Temperature);
 }

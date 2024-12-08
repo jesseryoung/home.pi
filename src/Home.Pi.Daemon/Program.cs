@@ -16,6 +16,7 @@ var host = Host
         services.AddOptions<TurnOffAllLightsOptions>().BindConfiguration(nameof(TurnOffAllLightsOptions));
         services.AddOptions<ChillOptions>().BindConfiguration(nameof(ChillOptions));
         services.AddOptions<ControlGroupedLightsHandlerOptions>().BindConfiguration(nameof(ControlGroupedLightsHandlerOptions));
+        services.AddOptions<TemperatureSensorHanlderOptions>().BindConfiguration(nameof(TemperatureSensorHanlderOptions));
 
         services
             .AddHttpClient<IHueLightController, HueLightController>((s, client) =>
