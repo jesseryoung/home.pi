@@ -20,7 +20,15 @@ internal class ControlGroupedLightsHandler(ILogger<ControlGroupedLightsHandler> 
     public override async Task HandleMessage(ControlGroupedLightsMessage notification, CancellationToken cancellationToken)
     {
         this.logger.LogInformation("Controlling {}", notification.Group);
+        var groupId = this.options.GroupNames[notification.Group];
+        var state = notification.On;
+        var brightness = notification.Brightness;
 
-        await this.hueLightController.SetGroup(this.options.GroupNames[notification.Group], notification.On, notification.Brightness);
+        if (notification.Toggle)
+        {
+            state = !await this.hueLightController.GetGroupState(groupId);
+        }
+
+        await this.hueLightController.SetGroup(groupId, state, brightness);
     }
 }

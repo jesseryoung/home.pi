@@ -10,12 +10,17 @@ internal class HueLightControllerOptions
 }
 internal interface IHueLightController
 {
+    Task<bool> GetGroupState(string groupId);
     Task SetGroup(string groupId, bool on, byte brightness);
     Task ActivateScene(string sceneId);
 }
 
 internal class HueLightController(HttpClient httpClient, ILogger<HueLightController> logger) : IHueLightController
 {
+    private record Response<T>(IReadOnlyList<T> Data);
+    private record State(bool On);
+    private record GroupedLight(string Id, State On);
+
     private readonly HttpClient httpClient = httpClient;
     private readonly ILogger<HueLightController> logger = logger;
 
@@ -32,6 +37,13 @@ internal class HueLightController(HttpClient httpClient, ILogger<HueLightControl
         var response = await this.httpClient.PutAsJsonAsync($"resource/scene/{sceneId}", sceneRequest);
         var responseText = await response.Content.ReadAsStringAsync();
         this.logger.LogInformation("Recieved '{}'", responseText);
+    }
+
+    public async Task<bool> GetGroupState(string groupId)
+    {
+        var response = await this.httpClient.GetFromJsonAsync<Response<GroupedLight>>($"resource/grouped_light/{groupId}");
+        this.logger.LogInformation("Recieved '{}'", response);
+        return response?.Data?.SingleOrDefault()?.On?.On ?? false;
     }
 
     public async Task SetGroup(string groupId, bool on, byte brightness)
