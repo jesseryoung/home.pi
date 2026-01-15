@@ -2,7 +2,6 @@
 using Home.Pi.Daemon.Handlers;
 using Microsoft.Extensions.Hosting;
 using MQTTnet.Server;
-using MQTTnet;
 using Home.Pi.Daemon.Controllers;
 using Microsoft.Extensions.Options;
 
@@ -36,11 +35,11 @@ var host = Host
             .AddScoped<ILightServerController, LightServerController>()
             .AddTransient(s =>
             {
-                return new MqttFactory()
-                    .CreateMqttServer(new MqttServerOptionsBuilder()
-                        .WithDefaultEndpoint()
-                        .Build()
-                    );
+                var factory = new MqttServerFactory();
+                return factory.CreateMqttServer(new MqttServerOptionsBuilder()
+                    .WithDefaultEndpoint()
+                    .Build()
+                );
             })
             .AddHostedService<MqttDaemon>()
             .AddMediatR(cfg =>

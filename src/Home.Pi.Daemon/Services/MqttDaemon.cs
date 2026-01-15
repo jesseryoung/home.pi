@@ -1,3 +1,4 @@
+using System.Buffers;
 using System.Text.Json;
 using MediatR;
 using Microsoft.Extensions.Hosting;
@@ -63,6 +64,8 @@ internal class MqttMessageFactory
         { ("zigbee2mqtt/office_wall_tap", "press_3"), new ControlGroupedLightsMessage() { Group = "Office" }},
         { ("zigbee2mqtt/office_wall_tap", "press_4"), new ControlGroupedLightsMessage() { Group = "LivingRoom" }},
         { ("zigbee2mqtt/bedroom_light_switch", "toggle"), new ControlGroupedLightsMessage() { Group = "MasterBedroom", Toggle = true }},
+        { ("zigbee2mqtt/guestroom_light_switch", "toggle"), new ControlGroupedLightsMessage() { Group = "GuestRoom", Toggle = true }},
+        { ("zigbee2mqtt/entry_light_switch", "toggle"), new ControlGroupedLightsMessage() { Group = "LivingRoom", Toggle = true }},
         { ("zigbee2mqtt/house_tap", "single"), new ChillMessage()},
         { ("zigbee2mqtt/house_tap", "long"), new WakeUpPcMessage()},
     };
@@ -73,7 +76,9 @@ internal class MqttMessageFactory
     {
         if (buttonMessageMap.Keys.Any(k => k.topic.ToLowerInvariant() == applicationMessage.Topic?.ToLowerInvariant()))
         {
-            var payload = JsonSerializer.Deserialize<ButtonActionPayload>(applicationMessage.PayloadSegment, serializerOptions);
+            var payloadBytes = new byte[applicationMessage.Payload.Length];
+            applicationMessage.Payload.CopyTo(payloadBytes);
+            var payload = JsonSerializer.Deserialize<ButtonActionPayload>(payloadBytes, serializerOptions);
 
             if (payload != null
                 && payload.Action != null
@@ -85,7 +90,9 @@ internal class MqttMessageFactory
 
         if (tempSensors.Contains(applicationMessage.Topic, StringComparer.InvariantCultureIgnoreCase))
         {
-            var payload = JsonSerializer.Deserialize<TempSensorPayload>(applicationMessage.PayloadSegment, serializerOptions);
+            var payloadBytes = new byte[applicationMessage.Payload.Length];
+            applicationMessage.Payload.CopyTo(payloadBytes);
+            var payload = JsonSerializer.Deserialize<TempSensorPayload>(payloadBytes, serializerOptions);
             if (payload != null)
             {
                 return [new TemperatureSensorMessage() {
