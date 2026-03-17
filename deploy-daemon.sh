@@ -60,10 +60,15 @@ if ! ssh "$USER@$SERVER_NAME" sudo systemctl daemon-reload; then
     exit 1
 fi
 
-# Restart services
+# Enable and restart services
 for service in ./out/systemd/*.service; do
     if [ -f "$service" ]; then
         SERVICE_NAME=$(basename "$service")
+        echo "Enabling $SERVICE_NAME...."
+        if ! ssh "$USER@$SERVER_NAME" sudo systemctl enable "$SERVICE_NAME"; then
+            echo "Failed to enable $SERVICE_NAME on $SERVER_NAME."
+            exit 1
+        fi
         echo "Restarting $SERVICE_NAME...."
         if ! ssh "$USER@$SERVER_NAME" sudo systemctl start "$SERVICE_NAME"; then
             echo "Failed to restart $SERVICE_NAME on $SERVER_NAME."
